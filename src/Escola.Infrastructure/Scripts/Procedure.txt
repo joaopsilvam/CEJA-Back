@@ -1,0 +1,20 @@
+﻿CREATE OR REPLACE PROCEDURE truncate_all_tables()
+LANGUAGE plpgsql
+AS $$
+DECLARE 
+    r RECORD;
+BEGIN 
+    FOR r IN (SELECT tablename FROM pg_tables WHERE schemaname = 'public') 
+    LOOP 
+        EXECUTE 'TRUNCATE TABLE ' || quote_ident(r.tablename) || ' CASCADE'; 
+    END LOOP;
+END $$;
+
+DROP TABLE IF EXISTS professor, disciplina, professor_disciplina, nota, aluno, turma CASCADE;
+
+TRUNCATE TABLE aluno RESTART IDENTITY CASCADE;
+TRUNCATE TABLE disciplina RESTART IDENTITY CASCADE;
+TRUNCATE TABLE nota RESTART IDENTITY CASCADE;
+TRUNCATE TABLE professor RESTART IDENTITY CASCADE;
+TRUNCATE TABLE professor_disciplina RESTART IDENTITY CASCADE;
+TRUNCATE TABLE turma RESTART IDENTITY CASCADE;

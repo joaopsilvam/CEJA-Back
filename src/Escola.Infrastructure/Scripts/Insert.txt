@@ -1,0 +1,22 @@
+﻿-- INSERT DE TEACHERS
+INSERT INTO user (Avatar, Name, Email, Document, Password, Phone, Address, BornDate)
+VALUES ('avatar1.jpg', 'João Silva', 'joao1@email.com', '11111111111', 'senha1', '11911111111', 'Rua A, 100', '1980-01-01');
+INSERT INTO teacher (Id) SELECT last_insert_rowid();
+
+INSERT INTO user (Avatar, Name, Email, Document, Password, Phone, Address, BornDate)
+VALUES ('avatar2.jpg', 'Maria Souza', 'maria2@email.com', '22222222222', 'senha2', '11922222222', 'Rua B, 200', '1985-02-02');
+INSERT INTO teacher (Id) SELECT last_insert_rowid();
+
+INSERT INTO user (Avatar, Name, Email, Document, Password, Phone, Address, BornDate)
+VALUES ('avatar3.jpg', 'Carlos Lima', 'carlos3@email.com', '33333333333', 'senha3', '11933333333', 'Rua C, 300', '1990-03-03');
+INSERT INTO teacher (Id) SELECT last_insert_rowid();
+
+INSERT INTO user (Avatar, Name, Email, Document, Password, Phone, Address, BornDate)
+VALUES ('avatar4.jpg', 'Ana Paula', 'ana4@email.com', '44444444444', 'senha4', '11944444444', 'Rua D, 400', '1988-04-04');
+INSERT INTO teacher (Id) SELECT last_insert_rowid();
+
+INSERT INTO user (Avatar, Name, Email, Document, Password, Phone, Address, BornDate)
+VALUES ('avatar5.jpg', 'Ricardo Alves', 'ricardo5@email.com', '55555555555', 'senha5', '11955555555', 'Rua E, 500', '1992-05-05');
+INSERT INTO teacher (Id) SELECT last_insert_rowid();
+
+-- INSERT DE 
