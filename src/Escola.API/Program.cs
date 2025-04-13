@@ -23,7 +23,7 @@ var builder = WebApplication.CreateBuilder(args);
 string dbPath;
 if (builder.Environment.IsProduction())
 {
-    var dataPath = Path.Combine(Environment.GetEnvironmentVariable("HOME") ?? ".", "Production", "Database");
+    var dataPath = Path.Combine(Environment.GetEnvironmentVariable("HOME") ?? ".", "site", "data");
     dbPath = Path.Combine(dataPath, "databaseProd.db");
 
     if (!Directory.Exists(dataPath))
@@ -38,7 +38,7 @@ if (builder.Environment.IsProduction())
 }
 else
 {
-    dbPath = Path.Combine(Directory.GetCurrentDirectory(), "Development", "databaseDev.db");
+    dbPath = Path.Combine(Directory.GetCurrentDirectory(), "Database", "databaseDev.db");
 
     var devDir = Path.GetDirectoryName(dbPath);
     if (!Directory.Exists(devDir))
@@ -136,12 +136,12 @@ using (var scope = app.Services.CreateScope())
     dbContext.SaveChanges();
 }
 
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseDeveloperExceptionPage();
-    app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Enceja.API v1"));
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Enceja.API v1");
+    c.RoutePrefix = "swagger";
+});
 
 app.UseHttpsRedirection();
 app.UseRouting();

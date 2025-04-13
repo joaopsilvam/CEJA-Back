@@ -366,3 +366,4 @@ FodyWeavers.xsd
 /src/Escola.API/Database/databaseProd.db-wal
 /src/Escola.API/Database/databaseProd.db-shm
 /src/Escola.API/Development
+/src/Escola.API/Database/databaseDev.db
