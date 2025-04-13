@@ -15,15 +15,49 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.IO;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+string dbPath;
+if (builder.Environment.IsProduction())
+{
+    var dataPath = Path.Combine(Environment.GetEnvironmentVariable("HOME") ?? ".", "Production", "Database");
+    dbPath = Path.Combine(dataPath, "databaseProd.db");
+
+    if (!Directory.Exists(dataPath))
+    {
+        Directory.CreateDirectory(dataPath);
+    }
+
+    if (!File.Exists(dbPath))
+    {
+        File.Create(dbPath).Dispose();
+    }
+}
+else
+{
+    dbPath = Path.Combine(Directory.GetCurrentDirectory(), "Development", "databaseDev.db");
+
+    var devDir = Path.GetDirectoryName(dbPath);
+    if (!Directory.Exists(devDir))
+    {
+        Directory.CreateDirectory(devDir);
+    }
+
+    if (!File.Exists(dbPath))
+    {
+        File.Create(dbPath).Dispose();
+    }
+}
+
+var connectionString = $"Data Source={dbPath}";
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(connectionString));
 
-var jwtSecret = "12345678"; // substitua por algo seguro
+var jwtSecret = "12345678";
 var key = Encoding.UTF8.GetBytes(jwtSecret);
 
 builder.Services.AddAuthentication("Bearer")
@@ -57,7 +91,6 @@ builder.Services.AddScoped<ITeacherService, TeacherService>();
 builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
-
 builder.Services.AddSingleton<TokenService>();
 
 builder.Services.AddControllers();

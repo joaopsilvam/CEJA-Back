@@ -10,6 +10,21 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Database\**" />
+	  <Compile Remove="Environment\**" />
+	  <Compile Remove="site\**" />
+	  <Content Remove="Database\**" />
+	  <Content Remove="Environment\**" />
+	  <Content Remove="site\**" />
+	  <EmbeddedResource Remove="Database\**" />
+	  <EmbeddedResource Remove="Environment\**" />
+	  <EmbeddedResource Remove="site\**" />
+	  <None Remove="Database\**" />
+	  <None Remove="Environment\**" />
+	  <None Remove="site\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
@@ -31,10 +46,6 @@
 		<ProjectReference Include="..\Escola.Application\Enceja.Application.csproj" />
 		<ProjectReference Include="..\Escola.Domain\Enceja.Domain.csproj" />
 		<ProjectReference Include="..\Escola.Infrastructure\Enceja.Infrastructure.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Database\" />
 	</ItemGroup>
 
 </Project>
