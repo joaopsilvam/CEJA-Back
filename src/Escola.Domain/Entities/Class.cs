@@ -14,5 +14,7 @@ namespace Enceja.Domain.Entities
         public string Name { get; set; }
 
         public ICollection<Student> Students { get; set; }
+        public ICollection<Subject_Class> Subjects_Class { get; set; }
+
     }
 }

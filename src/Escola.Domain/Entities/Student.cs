@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Enceja.Domain.Entities
 {
@@ -14,6 +15,7 @@ namespace Enceja.Domain.Entities
         [Column("registration_number")]
         public int RegistrationNumber { get; set; }
 
+        [JsonIgnore]
         public ICollection<Grade> Grades { get; set; }
 
         [ForeignKey(nameof(ClassId))]

@@ -16,6 +16,7 @@ namespace Enceja.Domain.Entities
 
         [JsonIgnore]
         public ICollection<Teacher_Subject> Teachers_Subjects { get; set; }
+        public ICollection<Subject_Class> Subjects_Class { get; set; }
     }
 
 }
