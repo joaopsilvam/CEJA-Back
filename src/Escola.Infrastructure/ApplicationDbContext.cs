@@ -15,6 +15,7 @@ namespace Enceja.Infrastructure
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Grade> Grades { get; set; }
         public DbSet<Teacher_Subject> Teachers_Subjects { get; set; }
+        public DbSet<Subject_Class> Subjects_Class { get; set; }
         public DbSet<Class> Classes { get; set; }
         public DbSet<User> Users { get; set; }
 
@@ -22,6 +23,7 @@ namespace Enceja.Infrastructure
         {
             base.OnModelCreating(modelBuilder);
 
+            //Teacher_Subject
             modelBuilder.Entity<Teacher_Subject>()
             .HasKey(pd => new { pd.TeacherId, pd.SubjectId });
 
@@ -34,6 +36,20 @@ namespace Enceja.Infrastructure
             .HasOne(pd => pd.Subject)
             .WithMany(d => d.Teachers_Subjects)
             .HasForeignKey(pd => pd.SubjectId);
+
+            //Subject_Class
+            modelBuilder.Entity<Subject_Class>()
+                .HasKey(sc => new { sc.SubjectId, sc.ClassId });
+
+            modelBuilder.Entity<Subject_Class>()
+                .HasOne(sc => sc.Subject)
+                .WithMany(s => s.Subjects_Class)
+                .HasForeignKey(sc => sc.SubjectId);
+            
+            modelBuilder.Entity<Subject_Class>()
+                .HasOne(sc => sc.Class)
+                .WithMany(s => s.Subjects_Class)
+                .HasForeignKey(sc => sc.ClassId);
         }
     }
 }
