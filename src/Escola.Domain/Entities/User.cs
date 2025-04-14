@@ -24,5 +24,10 @@ namespace Enceja.Domain.Entities
         public virtual string Address { get; set; }
 
         public DateTime BornDate { get; set; }
+
+        public string PasswordResetToken { get; set; }
+
+        public DateTime? PasswordResetTokenExpiry { get; set; }
+
     }
 }

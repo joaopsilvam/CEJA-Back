@@ -1,4 +1,4 @@
-﻿namespace Enceja.Appplication.DTOs
+﻿namespace Enceja.Application.DTO
 {
     public class LoginDTO
     {
