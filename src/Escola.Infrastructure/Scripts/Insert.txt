@@ -18,12 +18,13 @@ INSERT INTO teacher_subject(teacher_id, subject_id) VALUES (1, 1);
 INSERT INTO teacher_subject(teacher_id, subject_id) VALUES (2, 2);
 INSERT INTO teacher_subject(teacher_id, subject_id) VALUES (3, 3);
 
--- INSERT DE CLASS
-INSERT INTO class (id, name)
+-- INSERT DE CLASS 
+INSERT INTO class (id, year, shift, suffix)
 VALUES
-(1, 'Turma A - 1º Ano'),
-(2, 'Turma B - 2º Ano'),
-(3, 'Turma C - 3º Ano');
+(1, 2025, 1, 'A'),  -- Manhã
+(2, 2025, 2, 'B'),  -- Tarde
+(3, 2025, 3, 'C');  -- Noite
+
 
 -- INSERT DE TEACHER_CLASS
 INSERT INTO teacher_class(teacher_id, class_id) VALUES (1, 1);
