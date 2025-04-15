@@ -20,7 +20,7 @@ namespace Enceja.Domain.Entities
         public int Year { get; set; }
 
         [Column("shift")]
-        public Shift shift { get; set; }
+        public Shift Shift { get; set; }
 
          [Column("suffix")]
         public string Suffix { get; set; }
