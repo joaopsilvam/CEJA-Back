@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Enceja.Domain.Entities
 {
-    public enum Periodo
+    public enum Shift
     {
         Manha = 1,
         Tarde = 2,
@@ -17,16 +17,15 @@ namespace Enceja.Domain.Entities
         public int Id { get; set; }
 
         [Column("year")]
-        public int Ano { get; set; }
+        public int Year { get; set; }
 
-        [Column("period")]
-        public Periodo Periodo { get; set; }
+        [Column("shift")]
+        public Shift shift { get; set; }
 
          [Column("suffix")]
         public string Suffix { get; set; }
 
-        [Column("name")]
-        public string Name { get; set; }
+        
 
         public ICollection<Student>? Students { get; set; }
         public ICollection<Teacher_Class> Teachers_Class { get; set; }
