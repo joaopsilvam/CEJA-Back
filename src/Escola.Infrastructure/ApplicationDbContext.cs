@@ -15,7 +15,7 @@ namespace Enceja.Infrastructure
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Grade> Grades { get; set; }
         public DbSet<Teacher_Subject> Teachers_Subjects { get; set; }
-        public DbSet<Subject_Class> Subjects_Class { get; set; }
+        public DbSet<Teacher_Class> Teachers_Class { get; set; }
         public DbSet<Class> Classes { get; set; }
         public DbSet<User> Users { get; set; }
 
@@ -25,31 +25,31 @@ namespace Enceja.Infrastructure
 
             //Teacher_Subject
             modelBuilder.Entity<Teacher_Subject>()
-            .HasKey(pd => new { pd.TeacherId, pd.SubjectId });
+            .HasKey(tc => new { tc.TeacherId, tc.SubjectId });
 
             modelBuilder.Entity<Teacher_Subject>()
-            .HasOne(pd => pd.Teacher)
-            .WithMany(p => p.Teachers_Subjects)
-            .HasForeignKey(pd => pd.TeacherId);
+            .HasOne(ts => ts.Teacher)
+            .WithMany(t => t.Teachers_Subjects)
+            .HasForeignKey(ts => ts.TeacherId);
 
             modelBuilder.Entity<Teacher_Subject>()
-            .HasOne(pd => pd.Subject)
-            .WithMany(d => d.Teachers_Subjects)
-            .HasForeignKey(pd => pd.SubjectId);
+            .HasOne(ts => ts.Subject)
+            .WithMany(s => s.Teachers_Subjects)
+            .HasForeignKey(ts => ts.SubjectId);
 
-            //Subject_Class
-            modelBuilder.Entity<Subject_Class>()
-                .HasKey(sc => new { sc.SubjectId, sc.ClassId });
+            //Teacher_Class
+            modelBuilder.Entity<Teacher_Class>()
+            .HasKey(tc => new { tc.TeacherId, tc.ClassId });
 
-            modelBuilder.Entity<Subject_Class>()
-                .HasOne(sc => sc.Subject)
-                .WithMany(s => s.Subjects_Class)
-                .HasForeignKey(sc => sc.SubjectId);
-            
-            modelBuilder.Entity<Subject_Class>()
-                .HasOne(sc => sc.Class)
-                .WithMany(s => s.Subjects_Class)
-                .HasForeignKey(sc => sc.ClassId);
+            modelBuilder.Entity<Teacher_Class>()
+            .HasOne(tc => tc.Teacher)
+            .WithMany(t => t.Teachers_Class)
+            .HasForeignKey(tc => tc.TeacherId);
+
+            modelBuilder.Entity<Teacher_Class>()
+            .HasOne(tc => tc.Class)
+            .WithMany(c => c.Teachers_Class)
+            .HasForeignKey(tc => tc.ClassId);
         }
     }
 }

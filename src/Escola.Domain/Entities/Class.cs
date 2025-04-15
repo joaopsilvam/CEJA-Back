@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Enceja.Domain.Entities
@@ -13,8 +12,8 @@ namespace Enceja.Domain.Entities
         [Column("name")]
         public string Name { get; set; }
 
-        public ICollection<Student> Students { get; set; }
-        public ICollection<Subject_Class> Subjects_Class { get; set; }
+        public ICollection<Student>? Students { get; set; }
+        public ICollection<Teacher_Class> Teachers_Class { get; set; }
 
     }
 }

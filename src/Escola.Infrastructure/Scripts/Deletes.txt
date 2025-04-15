@@ -1,0 +1,18 @@
+﻿--TRUNCATE + SEQUENCE RESTART
+DELETE FROM student;
+DELETE FROM subject;
+DELETE FROM grade;
+DELETE FROM teacher;
+DELETE FROM teacher_subject;
+DELETE FROM teacher_class;
+DELETE FROM class;
+DELETE FROM user;
+
+DELETE FROM sqlite_sequence WHERE name='student';
+DELETE FROM sqlite_sequence WHERE name='subject';
+DELETE FROM sqlite_sequence WHERE name='grade';
+DELETE FROM sqlite_sequence WHERE name='teacher';
+DELETE FROM sqlite_sequence WHERE name='teacher_subject';
+DELETE FROM sqlite_sequence WHERE name='teacher_class';
+DELETE FROM sqlite_sequence WHERE name='class';
+DELETE FROM sqlite_sequence WHERE name='user';
