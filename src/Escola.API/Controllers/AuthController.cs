@@ -1,14 +1,11 @@
-﻿using Enceja.Domain.Services;
-using Enceja.Appplication.DTOs;
-using Enceja.Domain.Interfaces;
-using Microsoft.AspNetCore.Authorization;
+﻿using Enceja.Domain.Interfaces;
+using Enceja.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Hosting;
 using System.Threading.Tasks;
-using System.IdentityModel.Tokens.Jwt;
 using System;
-using System.Linq;
-using Enceja.Application.DTOs;
+using Enceja.Application.DTO;
 
 namespace Enceja.API.Controllers
 {
@@ -16,63 +13,67 @@ namespace Enceja.API.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly TokenService _tokenService;
-        private readonly IUserService _userService;
+        private readonly IAuthService _authService;
 
-        public AuthController(TokenService tokenService, IUserService userService)
+        public AuthController(IAuthService authService)
         {
-            _tokenService = tokenService;
-            _userService = userService;
+            _authService = authService;
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO request)
         {
-            var user = await _userService.GetByEmailAsync(request.Email);
-
-            if (user.Email != request.Email && user.Password != user.Password)
+            try
             {
-                return Unauthorized(new { Message = "Usuário ou senha inválidos" });
+                var result = await _authService.LoginAsync(request);
+                return Ok(result);
             }
-
-            var token = _tokenService.GenerateToken(user.Email, "User", request.RememberMe);
-            return Ok(new { Token = token, User = user });
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(new { Message = ex.Message });
+            }
         }
 
         [HttpPost("sign-in-with-token")]
-        public async Task<IActionResult> SignInWithToken([FromBody] TokenDTO dto)
+        public async Task<IActionResult> SignInWithToken([FromBody] TokenDTO request)
         {
-            var accessToken = dto?.AccessToken;
-
-            if (string.IsNullOrEmpty(accessToken))
-                return Unauthorized(new { message = "Token não fornecido" });
-
-            var handler = new JwtSecurityTokenHandler();
-
             try
             {
-                var token = handler.ReadJwtToken(accessToken);
-                var email = token.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
-
-                if (string.IsNullOrEmpty(email))
-                    return Unauthorized(new { message = "Token inválido" });
-
-                var user = await _userService.GetByEmailAsync(email);
-
-                if (user == null)
-                    return Unauthorized(new { message = "Usuário não encontrado" });
-
-                return Ok(new
-                {
-                    User = user
-                });
+                var user = await _authService.SignInWithTokenAsync(request.AccessToken);
+                return Ok(new { User = user });
             }
-            catch (Exception ex)
+            catch (UnauthorizedAccessException ex)
             {
-                return StatusCode(500, new { message = "Erro ao validar token", detail = ex.Message });
+                return Unauthorized(new { Message = ex.Message });
             }
         }
 
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDTO request)
+        {
+            try
+            {
+                await _authService.SendResetLinkAsync(request.Email);
+                return Ok(new { Message = "E-mail de redefinição enviado com sucesso." });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(new { Message = ex.Message });
+            }
+        }
 
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDTO request)
+        {
+            try
+            {
+                await _authService.ResetPasswordAsync(request);
+                return Ok(new { Message = "Senha redefinida com sucesso." });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+        }
     }
 }

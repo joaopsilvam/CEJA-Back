@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Enceja.Application.DTOs
+namespace Enceja.Application.DTO
 {
     public class TokenDTO
     {
-        public string AccessToken { get; set; }
+        public required string AccessToken { get; set; }
     }
 
 }
