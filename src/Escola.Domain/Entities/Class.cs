@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Enceja.Domain.Entities
 {
@@ -25,8 +26,7 @@ namespace Enceja.Domain.Entities
          [Column("suffix")]
         public string Suffix { get; set; }
 
-        
-
+        [JsonIgnore]
         public ICollection<Student>? Students { get; set; }
         public ICollection<Teacher_Class> Teachers_Class { get; set; }
     }

@@ -1,6 +1,6 @@
 ﻿using Enceja.Domain.Entities;
 using Enceja.Domain.Interfaces;
-using Enceja.Domain.Interfaces.Repositories;
+using Enceja.Domain.Interfaces;
 using System.Net.Mail;
 using System.Net;
 

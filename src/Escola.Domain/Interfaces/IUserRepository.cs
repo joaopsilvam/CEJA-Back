@@ -1,7 +1,7 @@
 ﻿using Enceja.Domain.Entities;
 using System.Threading.Tasks;
 
-namespace Enceja.Domain.Interfaces.Repositories
+namespace Enceja.Domain.Interfaces
 {
     public interface IUserRepository : IBaseRepository<User>
     {

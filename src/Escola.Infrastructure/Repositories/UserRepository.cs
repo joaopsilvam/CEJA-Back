@@ -1,7 +1,7 @@
-﻿using Enceja.Domain.Interfaces.Repositories;
-using Enceja.Domain.Entities;
+﻿using Enceja.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using Enceja.Domain.Interfaces;
 
 namespace Enceja.Infrastructure.Repositories
 {

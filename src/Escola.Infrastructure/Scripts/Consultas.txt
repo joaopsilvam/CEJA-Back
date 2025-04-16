@@ -1,0 +1,6 @@
+﻿-Student
+--Buscar student por class
+SELECT U.name
+from user as U
+JOIN student AS S ON U.id = S.id
+JOIN CLASS as C ON C.id = S.class_id

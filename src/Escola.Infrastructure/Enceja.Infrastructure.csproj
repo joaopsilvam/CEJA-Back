@@ -26,6 +26,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\Escola.Application\Enceja.Application.csproj" />
 		<ProjectReference Include="..\Escola.Domain\Enceja.Domain.csproj" />
 	</ItemGroup>
 

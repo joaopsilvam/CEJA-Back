@@ -1,5 +1,4 @@
 using Enceja.Infrastructure;
-using Enceja.Domain.Interfaces.Repositories;
 using Enceja.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;

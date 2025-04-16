@@ -3,6 +3,8 @@ using Enceja.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
+using Enceja.Application.DTO.Entities;
 
 namespace Enceja.API.Controllers
 {
@@ -34,6 +36,20 @@ namespace Enceja.API.Controllers
             }
             return Ok(student);
         }
+
+        [HttpGet("buscarAlunoPorTurma/{turmaId}")]
+        public async Task<ActionResult<IEnumerable<StudentDTO>>> GetStudentByClass(int classId)
+        {
+            var alunos = await _studentService.GetStudentByClass(classId);
+
+            if (alunos == null || !alunos.Any())
+            {
+                return NotFound("Nenhum aluno encontrado para essa turma.");
+            }
+
+            return Ok(alunos);
+        }
+
 
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] Student student)
