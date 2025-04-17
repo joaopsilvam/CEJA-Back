@@ -17,7 +17,7 @@ namespace Enceja.API.Controllers
             _classService = classService;
         }
 
-        [HttpGet]
+        [HttpGet("buscarTurmas")]
         public async Task<ActionResult<IEnumerable<Class>>> GetAll()
         {
             var turmas = await _classService.GetAllAsync();

@@ -10,7 +10,14 @@ namespace Enceja.Domain.Entities
         Tarde = 2,
         Noite = 3
     }
-    
+
+    public enum EducationLevel
+    {
+        Fundamental = 1,
+        Medio = 2,
+        Infantil = 3
+    }
+
     [Table("class")]
     public class Class
     {
@@ -23,11 +30,13 @@ namespace Enceja.Domain.Entities
         [Column("shift")]
         public Shift Shift { get; set; }
 
-         [Column("suffix")]
+        [Column("suffix")]
         public string Suffix { get; set; }
 
-        [JsonIgnore]
+        [Column("education_level")]
+        public EducationLevel EducationLevel { get; set; }
+
         public ICollection<Student>? Students { get; set; }
-        public ICollection<Teacher_Class> Teachers_Class { get; set; }
+        public ICollection<Teacher_Class>? Teachers_Class { get; set; }
     }
 }
