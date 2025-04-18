@@ -1,6 +1,7 @@
 ﻿using Enceja.Application.DTO.Entities;
 using Enceja.Domain.Entities;
 using Enceja.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace Enceja.Domain.Services
 {
@@ -24,5 +25,28 @@ namespace Enceja.Domain.Services
 
             return dtos;
         }
+
+        public async Task<IEnumerable<StudentDTO>> GetAllStudentsWithClass()
+        {
+            var students = await _studentRepository.GetAllStudentsWithClass();
+
+            var studentDtos = students.Select(s => new StudentDTO
+            {
+                ClassId = s.ClassId,
+                Name = s.Name,
+                RegistrationNumber = s.RegistrationNumber,
+                Class = s.Class != null ? new ClassDTO
+                {
+                    Id = s.Class.Id,
+                    Year = s.Class.Year,
+                    Shift = s.Class.Shift,
+                    Suffix = s.Class.Suffix,
+                    EducationLevel = s.Class.EducationLevel
+                } : null
+            });
+
+            return studentDtos;
+        }
+
     }
 }

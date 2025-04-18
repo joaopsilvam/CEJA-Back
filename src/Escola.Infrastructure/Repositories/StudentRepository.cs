@@ -15,27 +15,20 @@ namespace Enceja.Infrastructure.Repositories
         {
         }
 
+        public async Task<IEnumerable<Student>> GetAllStudentsWithClass()
+        {
+           return await _context.Students
+                .Include(s => s.Class)
+                .Where(s=> s.ClassId != null)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<Student>> GetStudentByClass(int classId)
         {
             return await _context.Students
                        .Include(s => s.Class)
                        .Where(s => s.ClassId == classId)
                        .ToListAsync();
-            //var studentsReturn = await _context.Students
-            //    .Include(s => s.Class)
-            //    .Where(s => s.ClassId == classId)
-            //    .ToListAsync();
-
-            //var dtos = studentsReturn.Select(s => new StudentDTO
-            //{
-            //    ClassId = s.ClassId,
-            //    RegistrationNumber = s.RegistrationNumber
-            //}).ToList();
-
-            //return dtos;
-
-            //return await _context.Students.ToListAsync();
-            //return await _context.Students.Where(s => s.ClassId == classId).ToListAsync();
         }
     }
 }

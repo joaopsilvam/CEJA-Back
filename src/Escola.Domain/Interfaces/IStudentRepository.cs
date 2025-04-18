@@ -7,5 +7,6 @@ namespace Enceja.Domain.Interfaces
     public interface IStudentRepository : IBaseRepository<Student>
     {
         Task<IEnumerable<Student>> GetStudentByClass(int classId);
+        Task<IEnumerable<Student>> GetAllStudentsWithClass();
     }
 }

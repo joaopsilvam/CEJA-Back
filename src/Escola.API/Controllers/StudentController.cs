@@ -19,6 +19,17 @@ namespace Enceja.API.Controllers
             _studentService = studentService;
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Student>> GetById(int id)
+        {
+            var student = await _studentService.GetByIdAsync(id);
+            if (student == null)
+            {
+                return NotFound();
+            }
+            return Ok(student);
+        }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Student>>> GetAll()
         {
@@ -26,10 +37,11 @@ namespace Enceja.API.Controllers
             return Ok(alunos);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Student>> GetById(int id)
+        [HttpGet("GetAllStudentsWithClass")]
+        public async Task<ActionResult<IEnumerable<StudentDTO>>> GetAllStudentsWithClass()
         {
-            var student = await _studentService.GetByIdAsync(id);
+            var student = await _studentService.GetAllStudentsWithClass();
+
             if (student == null)
             {
                 return NotFound();
