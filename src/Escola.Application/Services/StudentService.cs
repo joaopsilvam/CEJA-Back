@@ -32,6 +32,7 @@ namespace Enceja.Domain.Services
 
             var studentDtos = students.Select(s => new StudentDTO
             {
+                Id = s.Id,
                 ClassId = s.ClassId,
                 Name = s.Name,
                 RegistrationNumber = s.RegistrationNumber,
