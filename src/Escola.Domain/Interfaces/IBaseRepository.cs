@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -14,5 +15,6 @@ namespace Enceja.Domain.Interfaces
         Task DeleteAsync(int id);
         Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
         Task<T> GetByCpfAsync(string cpf);
+        IQueryable<T> GetQueryable();
     }
 }

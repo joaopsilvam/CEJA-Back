@@ -17,7 +17,7 @@ namespace Enceja.API.Controllers
             _classService = classService;
         }
 
-        [HttpGet("buscarTurmas")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<Class>>> GetAll()
         {
             var turmas = await _classService.GetAllAsync();
@@ -67,6 +67,47 @@ namespace Enceja.API.Controllers
 
             await _classService.DeleteAsync(id);
             return NoContent();
+        }
+
+        [HttpPost("{classId}/addStudent/{studentId}")]
+        public async Task<IActionResult> AddStudentToClass(int classId, int studentId)
+        {
+            var turma = await _classService.GetByIdAsync(classId);
+            if (turma == null)
+                return NotFound("Turma não encontrada");
+
+            await _classService.AddStudentToClassAsync(classId, studentId);
+            return Ok(new { Message = "Aluno adicionado à turma com sucesso." });
+        }
+
+        [HttpGet("{id}/withStudents")]
+        public async Task<ActionResult<Class>> GetWithStudents(int id)
+        {
+            var turma = await _classService.GetByIdWithStudentsAsync(id);
+            if (turma == null)
+                return NotFound();
+
+            return Ok(turma);
+        }
+
+        [HttpGet("{id}/students/count")]
+        public async Task<IActionResult> GetStudentCount(int id)
+        {
+            var turma = await _classService.GetByIdWithStudentsAsync(id);
+            if (turma == null)
+                return NotFound();
+
+            return Ok(turma.Students?.Count ?? 0);
+        }
+
+        [HttpGet("{id}/teachers/count")]
+        public async Task<IActionResult> GetTeacherCount(int id)
+        {
+            var turma = await _classService.GetByIdWithTeachersAsync(id);
+            if (turma == null)
+                return NotFound();
+
+            return Ok(turma.Teachers?.Count ?? 0);
         }
     }
 }
