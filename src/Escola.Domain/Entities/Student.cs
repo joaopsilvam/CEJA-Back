@@ -18,5 +18,7 @@ namespace Enceja.Domain.Entities
 
         [ForeignKey(nameof(ClassId))]
         public Class? Class { get; set; }
+
+        public ICollection<Subject> Subjects { get; set; }
     }
 }
