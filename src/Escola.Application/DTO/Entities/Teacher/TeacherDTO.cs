@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Enceja.Application.DTO.Entities.Class
+namespace Enceja.Application.DTO.Entities.Teacher
 {
     public class TeacherDTO
     {

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
-using Enceja.Application.DTO.Entities;
+using Enceja.Application.DTO.Entities.Student;
 
 namespace Enceja.API.Controllers
 {

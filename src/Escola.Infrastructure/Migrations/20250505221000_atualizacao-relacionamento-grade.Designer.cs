@@ -3,6 +3,7 @@ using System;
 using Enceja.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Enceja.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250505221000_atualizacao-relacionamento-grade")]
+    partial class atualizacaorelacionamentograde
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
@@ -60,15 +63,9 @@ namespace Enceja.Infrastructure.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("student_id");
 
-                    b.Property<int>("SubjectId")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("subject_id");
-
                     b.HasKey("Id");
 
                     b.HasIndex("StudentId");
-
-                    b.HasIndex("SubjectId");
 
                     b.ToTable("grade");
                 });
@@ -204,15 +201,7 @@ namespace Enceja.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Enceja.Domain.Entities.Subject", "Subject")
-                        .WithMany("Grades")
-                        .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Student");
-
-                    b.Navigation("Subject");
                 });
 
             modelBuilder.Entity("Enceja.Domain.Entities.Subject", b =>
@@ -297,8 +286,6 @@ namespace Enceja.Infrastructure.Migrations
 
             modelBuilder.Entity("Enceja.Domain.Entities.Subject", b =>
                 {
-                    b.Navigation("Grades");
-
                     b.Navigation("Teachers_Subjects");
                 });
 

@@ -21,5 +21,8 @@ namespace Enceja.Domain.Entities
 
         [ForeignKey(nameof(StudentId))]
         public virtual Student Student { get; set; }
+
+        public ICollection<Grade> Grades { get; set; }
+
     }
 }

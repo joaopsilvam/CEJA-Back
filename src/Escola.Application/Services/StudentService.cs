@@ -1,4 +1,5 @@
 ﻿using Enceja.Application.DTO.Entities;
+using Enceja.Application.DTO.Entities.Student;
 using Enceja.Domain.Entities;
 using Enceja.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;

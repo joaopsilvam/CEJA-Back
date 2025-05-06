@@ -1,6 +1,6 @@
 ﻿using Enceja.Domain.Entities;
 
-namespace Enceja.Application.DTO.Entities
+namespace Enceja.Application.DTO.Entities.Student
 {
     public class StudentDTO
     {

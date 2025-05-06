@@ -5,8 +5,16 @@ namespace Enceja.Domain.Services
 {
     public class GradeService : BaseService<Grade>, IGradeService
     {
-        public GradeService(IBaseRepository<Grade> repository) : base(repository)
+        private readonly IGradeRepository  _gradeRepository;
+
+        public GradeService(IBaseRepository<Grade> repository, IGradeRepository gradeRepository) : base(repository)
         {
+            _gradeRepository = gradeRepository;
+        }
+
+        public async Task<IEnumerable<Grade>> GetGradeBySubjectOfStudent(int studentId)
+        {
+           return await _gradeRepository.GetGradeBySubjectOfStudent(studentId);
         }
     }
 }

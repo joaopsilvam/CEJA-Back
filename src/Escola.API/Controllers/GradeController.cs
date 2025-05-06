@@ -34,6 +34,15 @@ namespace Enceja.API.Controllers
             return Ok(nota);
         }
 
+        [HttpGet("GetGradeBySubjectOfStudent/{studentId}")]
+        public async Task<ActionResult<IEnumerable<Grade>>> GetGradeBySubjectOfStudent(int studentId)
+        {
+            var notasPorDisciplinaAluno = await _gradeService.GetGradeBySubjectOfStudent(studentId);
+
+            return Ok(notasPorDisciplinaAluno);
+        }
+
+
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] Grade nota)
         {

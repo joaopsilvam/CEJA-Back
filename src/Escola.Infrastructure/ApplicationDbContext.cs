@@ -23,8 +23,8 @@ namespace Enceja.Infrastructure
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Student>().ToTable("student");
             modelBuilder.Entity<User>().ToTable("user");
+            modelBuilder.Entity<Student>().ToTable("student");
 
             //modelBuilder.Entity<Student>()
             //.HasOne(s => s.Class)

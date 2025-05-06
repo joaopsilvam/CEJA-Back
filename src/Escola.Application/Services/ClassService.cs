@@ -1,8 +1,9 @@
 ﻿using Enceja.Application.DTO.Entities.Class;
-using Enceja.Application.DTO.Entities;
 using Enceja.Domain.Entities;
 using Enceja.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Enceja.Application.DTO.Entities.Student;
+using Enceja.Application.DTO.Entities.Teacher;
 
 namespace Enceja.Domain.Services
 {
