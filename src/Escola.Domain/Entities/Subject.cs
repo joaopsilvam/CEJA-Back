@@ -16,7 +16,6 @@ namespace Enceja.Domain.Entities
         [Column("student_id")]
         public int StudentId { get; set; }
 
-        [JsonIgnore]
         public ICollection<Teacher_Subject> Teachers_Subjects { get; set; }
 
         [ForeignKey(nameof(StudentId))]

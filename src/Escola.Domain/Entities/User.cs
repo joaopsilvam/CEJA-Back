@@ -12,7 +12,7 @@ namespace Enceja.Domain.Entities
 
         public string Name { get; set; }
 
-        public string Email { get; set; }
+        public string Email { get; set; } 
 
         public string Document { get; set; }
 
@@ -20,7 +20,7 @@ namespace Enceja.Domain.Entities
 
         public string Phone { get; set; }
 
-        public virtual string Address { get; set; }
+        public string Address { get; set; }
 
         public DateTime BornDate { get; set; }
 
