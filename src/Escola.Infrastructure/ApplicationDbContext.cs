@@ -26,11 +26,6 @@ namespace Enceja.Infrastructure
             modelBuilder.Entity<User>().ToTable("user");
             modelBuilder.Entity<Student>().ToTable("student");
 
-            //modelBuilder.Entity<Student>()
-            //.HasOne(s => s.Class)
-            //.WithMany(c => c.Students)
-            //.HasForeignKey(s => s.ClassId);
-
             //Teacher_Subject
             modelBuilder.Entity<Teacher_Subject>()
             .HasKey(tc => new { tc.TeacherId, tc.SubjectId });

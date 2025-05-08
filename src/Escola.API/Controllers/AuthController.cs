@@ -1,8 +1,5 @@
 ﻿using Enceja.Domain.Interfaces;
-using Enceja.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Hosting;
 using System.Threading.Tasks;
 using System;
 using Enceja.Application.DTO;

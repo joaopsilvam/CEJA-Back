@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -16,5 +17,8 @@ namespace Enceja.Domain.Interfaces
         Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
         Task<T> GetByCpfAsync(string cpf);
         IQueryable<T> GetQueryable();
+        Task<IDbContextTransaction> BeginTransactionAsync();
+        Task ReloadAsync(T entity);
+        Task DetachAsync(T entity);
     }
 }

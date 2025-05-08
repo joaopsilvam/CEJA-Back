@@ -1,6 +1,7 @@
 ﻿using Enceja.Domain.Services;
 using Enceja.Domain.Interfaces;
 using Enceja.Domain.Entities;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Enceja.Application.Services
 {
@@ -17,5 +18,11 @@ namespace Enceja.Application.Services
         {
             return await _usuarioRepository.GetByEmailAsync(email);
         }
+
+        public Task<IDbContextTransaction> BeginTransactionAsync()
+        {
+            return _usuarioRepository.BeginTransactionAsync();
+        }
+
     }
 }

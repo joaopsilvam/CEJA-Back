@@ -53,5 +53,17 @@ namespace Enceja.Domain.Services
             return studentDtos;
         }
 
+        public Task<int> GenerateRegistrationNumberAsync(string cpf)
+        {
+            if (string.IsNullOrWhiteSpace(cpf) || cpf.Length < 3)
+                throw new ArgumentException("CPF inválido para gerar número de matrícula.");
+
+            var anoAtual = DateTime.Now.Year;
+            var primeiros3 = cpf.Substring(0, 3);
+
+            var numero = $"{anoAtual}{primeiros3}";
+            return Task.FromResult(int.Parse(numero));
+
+        }
     }
 }

@@ -16,6 +16,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IO;
 using System.Text;
+using System.Linq;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -118,27 +119,31 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    var passwordHasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher<User>>();
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-    dbContext.Database.Migrate();
-
-    var user = new User
+    if (!context.Users.Any(u => u.Role == RoleType.Admin))
     {
-        Avatar = "https://example.com/avatar.jpg",
-        Name = "admin",
-        Email = "admin@gmail.com",
-        Document = "123.456.789-00",
-        Phone = "(11) 91234-5678",
-        Address = "Rua das Flores, 123 - São Paulo, SP",
-        BornDate = new DateTime(1985, 7, 15)
-    };
+        var password = "admin123"; 
+        var passwordHasher = new PasswordHasher<User>();
+        var admin = new User
+        {
+            Name = "Usuario Administrador",
+            Email = "admin@escola.com",
+            Password = "", 
+            Document = "00000000000",
+            Phone = "11999999999",
+            Address = "Sistema - Inicialização",
+            BornDate = new DateTime(1980, 1, 1),
+            Role = RoleType.Admin
+        };
 
-    user.Password = passwordHasher.HashPassword(user, "123");
+        admin.Password = passwordHasher.HashPassword(admin, password);
 
-    dbContext.Users.Add(user);
-    dbContext.SaveChanges();
+        context.Users.Add(admin);
+        context.SaveChanges();
+    }
 }
+
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>

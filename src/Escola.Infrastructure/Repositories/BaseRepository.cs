@@ -1,8 +1,8 @@
 ﻿using Enceja.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -22,8 +22,15 @@ namespace Enceja.Infrastructure.Repositories
 
         public async Task AddAsync(T entity)
         {
-            await _dbSet.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _dbSet.AddAsync(entity);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public async Task DeleteAsync(int id)
@@ -46,8 +53,8 @@ namespace Enceja.Infrastructure.Repositories
             try
             {
                 return await _dbSet.ToListAsync();
-
-            }catch(Exception error)
+            }
+            catch (Exception)
             {
                 return null;
             }
@@ -79,6 +86,22 @@ namespace Enceja.Infrastructure.Repositories
         public IQueryable<T> GetQueryable()
         {
             return _dbSet.AsQueryable();
+        }
+
+        public async Task<IDbContextTransaction> BeginTransactionAsync()
+        {
+            return await _context.Database.BeginTransactionAsync();
+        }
+
+        public async Task ReloadAsync(T entity)
+        {
+            await _context.Entry(entity).ReloadAsync();
+        }
+
+        public Task DetachAsync(T entity)
+        {
+            _context.Entry(entity).State = EntityState.Detached;
+            return Task.CompletedTask;
         }
     }
 }

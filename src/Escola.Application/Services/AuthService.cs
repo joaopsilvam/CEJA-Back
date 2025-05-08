@@ -44,15 +44,21 @@ namespace Enceja.Application.Services
 
             if (user == null)
                 throw new UnauthorizedAccessException("Usuário ou senha inválidos.");
+            try
+            {
+                var passwordValid = _passwordHasher.VerifyHashedPassword(user, user.Password, request.Password);
 
-            var passwordValid = _passwordHasher.VerifyHashedPassword(user, user.Password, request.Password);
+                if (passwordValid != PasswordVerificationResult.Success)
+                    throw new UnauthorizedAccessException("Usuário ou senha inválidos.");
 
-            if (passwordValid != PasswordVerificationResult.Success)
-                throw new UnauthorizedAccessException("Usuário ou senha inválidos.");
+                var token = _tokenService.GenerateToken(user.Email, "User", request.RememberMe);
 
-            var token = _tokenService.GenerateToken(user.Email, "User", request.RememberMe);
-
-            return new { Token = token, User = user };
+                return new { Token = token, User = user };
+            }
+            catch (Exception error)
+            {
+                return error;
+            }
         }
 
         public async Task<User> SignInWithTokenAsync(string token)

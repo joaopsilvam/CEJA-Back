@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Enceja.Domain.Entities;
 using Enceja.Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Enceja.Domain.Services;
 
 namespace Enceja.API.Controllers
 {
@@ -12,12 +13,14 @@ namespace Enceja.API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IStudentService _studentService;
         private readonly IPasswordHasher<User> _passwordHasher;
 
-        public UserController(IUserService userService, IPasswordHasher<User> passwordHasher)
+        public UserController(IUserService userService, IPasswordHasher<User> passwordHasher, IStudentService studentService)
         {
             _userService = userService;
             _passwordHasher = passwordHasher;
+            _studentService = studentService;
         }
 
         [HttpGet]
@@ -44,9 +47,45 @@ namespace Enceja.API.Controllers
                 return BadRequest("Usuário inválido");
 
             user.Password = _passwordHasher.HashPassword(user, user.Password);
-            await _userService.AddAsync(user);
-            return CreatedAtAction(nameof(GetAll), new { id = user.Id }, user);
+
+            using var transaction = await _userService.BeginTransactionAsync();
+
+            try
+            {
+                await _userService.AddAsync(user);
+
+
+                if (user.Role == RoleType.Student)
+                {
+                    var registrationNumber = await _studentService.GenerateRegistrationNumberAsync(user.Document);
+
+                    var student = new Student
+                    {
+                        Id = user.Id,
+                        RegistrationNumber = registrationNumber
+                    };
+
+                    await _studentService.AddAsync(student);
+                }
+                else if (user.Role == RoleType.PendingTeacher)
+                {
+                    var teacher = new Teacher
+                    {
+                        Id = user.Id
+                    };
+
+                    //await _teacherService.AddAsync(teacher);
+                }
+
+                return CreatedAtAction(nameof(GetAll), new { id = user.Id }, user);
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
         }
+
 
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] User user)

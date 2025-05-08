@@ -64,14 +64,16 @@ namespace Enceja.API.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] StudentDTO student)
+        public async Task<ActionResult> Post([FromBody] Student student)
         {
             if (student == null)
             {
                 return BadRequest();
             }
+
             student.Id = 0;
-            //await _studentService.AddAsync(student);
+
+            await _studentService.AddAsync(student);
 
             return CreatedAtAction(nameof(GetById), new { id = student.Id }, student);
         }

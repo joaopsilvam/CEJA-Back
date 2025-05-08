@@ -1,6 +1,4 @@
-﻿using Enceja.Domain.Entities;
-
-namespace Enceja.Application.DTO.Entities.Student
+﻿namespace Enceja.Application.DTO.Entities.Student
 {
     public class StudentDTO
     {
@@ -15,5 +13,6 @@ namespace Enceja.Application.DTO.Entities.Student
 
         public ClassDTO? Class { get; set; }
 
+        public RoleType Role { get; set; }
     }
 }
