@@ -20,5 +20,7 @@ namespace Enceja.Domain.Interfaces
         Task<IDbContextTransaction> BeginTransactionAsync();
         Task ReloadAsync(T entity);
         Task DetachAsync(T entity);
+        Task AddWithoutSaveAsync(T entity);
+        Task SaveChangesAsync();
     }
 }

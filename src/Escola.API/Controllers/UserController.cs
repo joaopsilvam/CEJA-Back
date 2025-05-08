@@ -5,6 +5,7 @@ using Enceja.Domain.Entities;
 using Enceja.Domain.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Enceja.Domain.Services;
+using System;
 
 namespace Enceja.API.Controllers
 {
@@ -52,8 +53,8 @@ namespace Enceja.API.Controllers
 
             try
             {
-                await _userService.AddAsync(user);
-
+                // Adiciona sem salvar
+                await _userService.AddWithoutSaveAsync(user);
 
                 if (user.Role == RoleType.Student)
                 {
@@ -65,21 +66,15 @@ namespace Enceja.API.Controllers
                         RegistrationNumber = registrationNumber
                     };
 
-                    await _studentService.AddAsync(student);
+                    await _studentService.AddWithoutSaveAsync(student);
                 }
-                else if (user.Role == RoleType.PendingTeacher)
-                {
-                    var teacher = new Teacher
-                    {
-                        Id = user.Id
-                    };
 
-                    //await _teacherService.AddAsync(teacher);
-                }
+                await _userService.SaveChangesAsync();
+                await transaction.CommitAsync();
 
                 return CreatedAtAction(nameof(GetAll), new { id = user.Id }, user);
             }
-            catch
+            catch (Exception)
             {
                 await transaction.RollbackAsync();
                 throw;

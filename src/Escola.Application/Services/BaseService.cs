@@ -49,5 +49,16 @@ namespace Enceja.Domain.Services
         {
             return await _repository.FindAsync(predicate);
         }
+
+        public async Task AddWithoutSaveAsync(T entity)
+        {
+            await _repository.AddWithoutSaveAsync(entity);
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _repository.SaveChangesAsync();
+
+        }
     }
 }

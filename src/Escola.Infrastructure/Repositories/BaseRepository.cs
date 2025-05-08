@@ -33,6 +33,11 @@ namespace Enceja.Infrastructure.Repositories
             }
         }
 
+        public Task AddWithoutSaveAsync(T entity)
+        {
+            return _dbSet.AddAsync(entity).AsTask();
+        }
+
         public async Task DeleteAsync(int id)
         {
             var entity = await _dbSet.FindAsync(id);
@@ -102,6 +107,11 @@ namespace Enceja.Infrastructure.Repositories
         {
             _context.Entry(entity).State = EntityState.Detached;
             return Task.CompletedTask;
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }
