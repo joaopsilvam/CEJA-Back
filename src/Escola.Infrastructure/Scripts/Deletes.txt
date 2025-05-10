@@ -7,6 +7,7 @@ DELETE FROM teacher_subject;
 DELETE FROM teacher_class;
 DELETE FROM class;
 DELETE FROM user;
+DELETE FROM role;
 
 DELETE FROM sqlite_sequence WHERE name='student';
 DELETE FROM sqlite_sequence WHERE name='subject';
@@ -16,3 +17,4 @@ DELETE FROM sqlite_sequence WHERE name='teacher_subject';
 DELETE FROM sqlite_sequence WHERE name='teacher_class';
 DELETE FROM sqlite_sequence WHERE name='class';
 DELETE FROM sqlite_sequence WHERE name='user';
+DELETE FROM sqlite_sequence WHERE name='role';

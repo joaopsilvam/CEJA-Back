@@ -14,14 +14,12 @@ namespace Enceja.API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        private readonly IStudentService _studentService;
         private readonly IPasswordHasher<User> _passwordHasher;
 
-        public UserController(IUserService userService, IPasswordHasher<User> passwordHasher, IStudentService studentService)
+        public UserController(IUserService userService, IPasswordHasher<User> passwordHasher) 
         {
             _userService = userService;
             _passwordHasher = passwordHasher;
-            _studentService = studentService;
         }
 
         [HttpGet]
@@ -44,43 +42,14 @@ namespace Enceja.API.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] User user)
         {
-            if (user == null)
-                return BadRequest("Usuário inválido");
+            //if (user == null)
+            //    return BadRequest("Usuário inválido");
 
-            user.Password = _passwordHasher.HashPassword(user, user.Password);
+            //user.Password = _passwordHasher.HashPassword(user, user.Password);
 
-            using var transaction = await _userService.BeginTransactionAsync();
-
-            try
-            {
-                // Adiciona sem salvar
-                await _userService.AddWithoutSaveAsync(user);
-
-                if (user.Role == RoleType.Student)
-                {
-                    var registrationNumber = await _studentService.GenerateRegistrationNumberAsync(user.Document);
-
-                    var student = new Student
-                    {
-                        Id = user.Id,
-                        RegistrationNumber = registrationNumber
-                    };
-
-                    await _studentService.AddWithoutSaveAsync(student);
-                }
-
-                await _userService.SaveChangesAsync();
-                await transaction.CommitAsync();
-
-                return CreatedAtAction(nameof(GetAll), new { id = user.Id }, user);
-            }
-            catch (Exception)
-            {
-                await transaction.RollbackAsync();
-                throw;
-            }
+            //using var transaction = await _userService.BeginTransactionAsync();
+            return null;
         }
-
 
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] User user)

@@ -95,6 +95,8 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+builder.Services.AddScoped<IPasswordHasher<Student>, PasswordHasher<Student>>();
+builder.Services.AddScoped<IPasswordHasher<Teacher>, PasswordHasher<Teacher>>();
 builder.Services.AddSingleton<TokenService>();
 
 builder.Services.AddControllers();
@@ -121,7 +123,7 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-    if (!context.Users.Any(u => u.Role == RoleType.Admin))
+    if (!context.Users.Any(u => u.RoleId == 1))
     {
         var password = "admin123"; 
         var passwordHasher = new PasswordHasher<User>();
@@ -134,7 +136,7 @@ using (var scope = app.Services.CreateScope())
             Phone = "11999999999",
             Address = "Sistema - Inicialização",
             BornDate = new DateTime(1980, 1, 1),
-            Role = RoleType.Admin
+            RoleId = 1
         };
 
         admin.Password = passwordHasher.HashPassword(admin, password);

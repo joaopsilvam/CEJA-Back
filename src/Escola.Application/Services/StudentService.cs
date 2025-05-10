@@ -1,5 +1,4 @@
 ﻿using Enceja.Application.DTO.Entities;
-using Enceja.Application.DTO.Entities.Student;
 using Enceja.Domain.Entities;
 using Enceja.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -31,26 +30,27 @@ namespace Enceja.Domain.Services
         {
             var students = await _studentRepository.GetAllStudentsWithClass();
 
-            var studentDtos = students.Select(s => new StudentDTO
-            {
-                Id = s.Id,
-                Name = s.Name,
-                Email = s.Email,
-                Phone = s.Phone,
-                Address = s.Address,
-                ClassId = s.ClassId,
-                RegistrationNumber = s.RegistrationNumber,
-                Class = s.Class != null ? new ClassDTO
-                {
-                    Id = s.Class.Id,
-                    Year = s.Class.Year,
-                    Shift = s.Class.Shift,
-                    Suffix = s.Class.Suffix,
-                    EducationLevel = s.Class.EducationLevel
-                } : null
-            });
+            //var studentDtos = students.Select(s => new StudentDTO
+            //{
+            //    Id = s.Id,
+            //    Name = s.Name,
+            //    Email = s.Email,
+            //    Phone = s.Phone,
+            //    Address = s.Address,
+            //    ClassId = s.ClassId,
+            //    RegistrationNumber = s.RegistrationNumber,
+            //    Class = s.Class != null ? new ClassDTO
+            //    {
+            //        Id = s.Class.Id,
+            //        Year = s.Class.Year,
+            //        Shift = s.Class.Shift,
+            //        Suffix = s.Class.Suffix,
+            //        EducationLevel = s.Class.EducationLevel
+            //    } : null
+            //});
 
-            return studentDtos;
+            //return studentDtos;
+            return null;
         }
 
         public Task<int> GenerateRegistrationNumberAsync(string cpf)

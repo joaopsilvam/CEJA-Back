@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
-using Enceja.Application.DTO.Entities.Student;
+using Microsoft.AspNetCore.Identity;
+using System;
 
 namespace Enceja.API.Controllers
 {
@@ -13,10 +14,14 @@ namespace Enceja.API.Controllers
     public class StudentController : ControllerBase
     {
         private readonly IStudentService _studentService;
+        private readonly IPasswordHasher<Student> _passwordHasher;
 
-        public StudentController(IStudentService studentService)
+
+        public StudentController(IStudentService studentService, IPasswordHasher<Student> passwordHasher)
         {
             _studentService = studentService;
+            _passwordHasher = passwordHasher;
+
         }
 
         [HttpGet("{id}")]
@@ -62,21 +67,37 @@ namespace Enceja.API.Controllers
             return Ok(alunos);
         }
 
-
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] Student student)
+        public async Task<ActionResult> Post([FromBody] StudentDTO dto)
         {
-            if (student == null)
-            {
+            if (dto == null)
                 return BadRequest();
+
+            try
+            {
+                var student = new Student
+                {
+                    Avatar = dto.Avatar,
+                    Name = dto.Name,
+                    Email = dto.Email,
+                    Document = dto.Document,
+                    Phone = dto.Phone,
+                    Address = dto.Address,
+                    BornDate = dto.BornDate,
+                    RoleId = dto.RoleId,
+                    Password = _passwordHasher.HashPassword(null, dto.Password),
+                    RegistrationNumber = await _studentService.GenerateRegistrationNumberAsync(dto.Document)
+                };
+
+                await _studentService.AddAsync(student);
+                return Ok();
             }
-
-            student.Id = 0;
-
-            await _studentService.AddAsync(student);
-
-            return CreatedAtAction(nameof(GetById), new { id = student.Id }, student);
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
+
 
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] Student aluno)

@@ -3,6 +3,7 @@ using System;
 using Enceja.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Enceja.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250508133915_remocao-heranca")]
+    partial class remocaoheranca
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
@@ -73,22 +76,6 @@ namespace Enceja.Infrastructure.Migrations
                     b.ToTable("grade");
                 });
 
-            modelBuilder.Entity("Enceja.Domain.Entities.Role", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("id");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT")
-                        .HasColumnName("name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("role");
-                });
-
             modelBuilder.Entity("Enceja.Domain.Entities.Student", b =>
                 {
                     b.Property<int>("Id")
@@ -144,16 +131,9 @@ namespace Enceja.Infrastructure.Migrations
                         .HasColumnType("INTEGER")
                         .HasColumnName("registration_number");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("role_id");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ClassId");
-
-                    b.HasIndex("RoleId")
-                        .IsUnique();
 
                     b.ToTable("student", (string)null);
                 });
@@ -227,14 +207,7 @@ namespace Enceja.Infrastructure.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("phone");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("role_id");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("RoleId")
-                        .IsUnique();
 
                     b.ToTable("teacher");
                 });
@@ -309,13 +282,10 @@ namespace Enceja.Infrastructure.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("role_id");
+                    b.Property<int>("Role")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
 
                     b.ToTable("user", (string)null);
                 });
@@ -345,15 +315,7 @@ namespace Enceja.Infrastructure.Migrations
                         .WithMany("Students")
                         .HasForeignKey("ClassId");
 
-                    b.HasOne("Enceja.Domain.Entities.Role", "Role")
-                        .WithOne("Student")
-                        .HasForeignKey("Enceja.Domain.Entities.Student", "RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Class");
-
-                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Enceja.Domain.Entities.Subject", b =>
@@ -365,17 +327,6 @@ namespace Enceja.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("Enceja.Domain.Entities.Teacher", b =>
-                {
-                    b.HasOne("Enceja.Domain.Entities.Role", "Role")
-                        .WithOne("Teacher")
-                        .HasForeignKey("Enceja.Domain.Entities.Teacher", "RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Enceja.Domain.Entities.Teacher_Class", b =>
@@ -416,29 +367,11 @@ namespace Enceja.Infrastructure.Migrations
                     b.Navigation("Teacher");
                 });
 
-            modelBuilder.Entity("Enceja.Domain.Entities.User", b =>
-                {
-                    b.HasOne("Enceja.Domain.Entities.Role", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
-                });
-
             modelBuilder.Entity("Enceja.Domain.Entities.Class", b =>
                 {
                     b.Navigation("Students");
 
                     b.Navigation("Teachers_Class");
-                });
-
-            modelBuilder.Entity("Enceja.Domain.Entities.Role", b =>
-                {
-                    b.Navigation("Student");
-
-                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("Enceja.Domain.Entities.Student", b =>

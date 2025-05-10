@@ -1,5 +1,4 @@
-﻿using Enceja.Application.DTO.Entities.Student;
-using Enceja.Domain.Entities;
+﻿using Enceja.Domain.Entities;
 
 namespace Enceja.Domain.Interfaces
 {

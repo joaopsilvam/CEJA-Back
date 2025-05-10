@@ -1,5 +1,4 @@
-﻿using Enceja.Application.DTO.Entities.Student;
-
+﻿
 namespace Enceja.Application.DTO.Entities.Class
 {
     public class ClassGetByIdWithStudentsDTO
