@@ -6,8 +6,16 @@ namespace Enceja.Domain.Services
 {
     public class TeacherService : BaseService<Teacher>, ITeacherService
     {
-        public TeacherService(IBaseRepository<Teacher> repository) : base(repository)
+        private readonly ITeacherRepository _teacherRepository;
+
+        public TeacherService(IBaseRepository<Teacher> repository, ITeacherRepository teacherRepository) : base(repository)
         {
+            _teacherRepository = teacherRepository;
+        }
+
+        public async Task ApproveTeacherAsync(int teacherId)
+        {
+            await _teacherRepository.ApproveTeacherAsync(teacherId);
         }
     }
 }

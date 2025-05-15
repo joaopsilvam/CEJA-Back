@@ -123,15 +123,17 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
+    context.Database.Migrate();
+
     if (!context.Users.Any(u => u.RoleId == 1))
     {
-        var password = "admin123"; 
+        var password = "123";
         var passwordHasher = new PasswordHasher<User>();
         var admin = new User
         {
             Name = "Usuario Administrador",
             Email = "admin@escola.com",
-            Password = "", 
+            Password = "",
             Document = "00000000000",
             Phone = "11999999999",
             Address = "Sistema - Inicialização",
@@ -145,7 +147,6 @@ using (var scope = app.Services.CreateScope())
         context.SaveChanges();
     }
 }
-
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>

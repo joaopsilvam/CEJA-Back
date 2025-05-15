@@ -39,7 +39,6 @@ namespace Enceja.API.Controllers
             return Ok(teacher);
         }
 
-
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] TeacherDTO dto)
         {
@@ -80,6 +79,14 @@ namespace Enceja.API.Controllers
             await _teacherService.UpdateAsync(teacher);
             return NoContent();
         }
+
+        [HttpPut("AproveTeacher/{id}")]
+        public async Task<IActionResult> AproveTeacher(int id)
+        {
+            await _teacherService.ApproveTeacherAsync(id);
+            return Ok(); 
+        }
+
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
