@@ -14,15 +14,9 @@ namespace Enceja.Application.Services
             _usuarioRepository = usuarioRepository;
         }
 
-        public async Task<User> GetByEmailAsync(string email)
-        {
-            return await _usuarioRepository.GetByEmailAsync(email);
-        }
-
         public Task<IDbContextTransaction> BeginTransactionAsync()
         {
             return _usuarioRepository.BeginTransactionAsync();
         }
-
     }
 }

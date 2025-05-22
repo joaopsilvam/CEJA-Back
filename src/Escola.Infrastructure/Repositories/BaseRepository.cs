@@ -1,4 +1,5 @@
-﻿using Enceja.Domain.Interfaces;
+﻿using Enceja.Domain.Entities;
+using Enceja.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
@@ -73,6 +74,19 @@ namespace Enceja.Infrastructure.Repositories
         public async Task<T> GetByCpfAsync(string cpf)
         {
             return await _dbSet.FindAsync(cpf);
+        }
+
+        public async Task<T> GetByEmailAsync(string email)
+        {
+            try
+            {
+
+                return await _dbSet.FirstOrDefaultAsync(e => EF.Property<string>(e, "Email") == email);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
         public async Task UpdateAsync(T entity)

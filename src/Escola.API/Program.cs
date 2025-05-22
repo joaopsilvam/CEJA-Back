@@ -94,7 +94,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
-builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+builder.Services.AddScoped<IPasswordHasher<String>, PasswordHasher<String>>();
 builder.Services.AddScoped<IPasswordHasher<Student>, PasswordHasher<Student>>();
 builder.Services.AddScoped<IPasswordHasher<Teacher>, PasswordHasher<Teacher>>();
 builder.Services.AddSingleton<TokenService>();

@@ -16,7 +16,7 @@ namespace Enceja.Domain.Services
             _secretKey = JwtSecretKey.GenerateSecretKey();
         }
 
-        public string GenerateToken(string email, string role, bool rememberMe)
+        public string GenerateToken(string email, int roleId, bool rememberMe)
         {
             var keyBytes = JwtSecretKey.GetKeyBytes(_secretKey);
             var key = new SymmetricSecurityKey(keyBytes);
@@ -25,7 +25,7 @@ namespace Enceja.Domain.Services
             var claims = new[]
             {
                 new Claim(ClaimTypes.Email, email),
-                new Claim(ClaimTypes.Role, role)
+                new Claim("roleId", roleId.ToString())
             };
 
             var expires = rememberMe

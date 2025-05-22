@@ -22,5 +22,10 @@ namespace Enceja.Domain.Entities
 
         [ForeignKey(nameof(RoleId))]
         public Role Role { get; set; }
+
+        public static explicit operator User(Student v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

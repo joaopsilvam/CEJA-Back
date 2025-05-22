@@ -1,4 +1,5 @@
-﻿using Enceja.Domain.Interfaces;
+﻿using Enceja.Domain.Entities;
+using Enceja.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -28,6 +29,12 @@ namespace Enceja.Domain.Services
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _repository.GetAllAsync();
+        }
+
+        public async Task<T> GetByEmailAsync(string email)
+        {
+            return await _repository.GetByEmailAsync(email);
+
         }
 
         public async Task AddAsync(T entity)
@@ -60,5 +67,7 @@ namespace Enceja.Domain.Services
             await _repository.SaveChangesAsync();
 
         }
+
+     
     }
 }

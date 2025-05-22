@@ -17,19 +17,26 @@ namespace Enceja.Application.Services
     public class AuthService : IAuthService
     {
         private readonly IUserService _userService;
+        private readonly IStudentService _studentService;
+        private readonly ITeacherService _teacherService;
         private readonly IEmailService _emailService;
         private readonly TokenService _tokenService;
         private readonly IWebHostEnvironment _env;
         private readonly IConfiguration _config;
-        private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly IPasswordHasher<string> _passwordHasher;
+
         public AuthService(
             IUserService userService,
             IEmailService emailService,
             TokenService tokenService,
+            IStudentService studentService,
+            ITeacherService teacherService,
             IWebHostEnvironment env,
             IConfiguration config,
-            IPasswordHasher<User> passwordHasher)
+            IPasswordHasher<string> passwordHasher)
         {
+            _studentService = studentService;
+            _teacherService = teacherService;
             _userService = userService;
             _emailService = emailService;
             _tokenService = tokenService;
@@ -40,25 +47,79 @@ namespace Enceja.Application.Services
 
         public async Task<object> LoginAsync(LoginDTO request)
         {
-            var user = await _userService.GetByEmailAsync(request.Email);
-
-            if (user == null)
-                throw new UnauthorizedAccessException("Usuário ou senha inválidos.");
             try
             {
-                var passwordValid = _passwordHasher.VerifyHashedPassword(user, user.Password, request.Password);
+                object entity;
+                if (request.RoleId == 3)
+                {
+                    entity = await _studentService.GetByEmailAsync(request.Email);
+                }
+                else if (request.RoleId == 2)
+                {
+                    entity = await _teacherService.GetByEmailAsync(request.Email);
+                }
+                else
+                {
+                    entity = await _userService.GetByEmailAsync(request.Email);
+                }
 
-                if (passwordValid != PasswordVerificationResult.Success)
-                    throw new UnauthorizedAccessException("Usuário ou senha inválidos.");
+                if (entity == null)
+                    throw new UnauthorizedAccessException("Usuário não encontrado.");
 
-                var token = _tokenService.GenerateToken(user.Email, "User", request.RememberMe);
-
-                return new { Token = token, User = user };
+                return await AuthenticateEntityAsync(entity, request.Password, request.RememberMe);
             }
             catch (Exception error)
             {
                 return error;
             }
+        }
+
+        private async Task<object> AuthenticateEntityAsync(object entity, string password, bool rememberMe)
+        {
+            string email;
+            string hashedPassword;
+            int roleId;
+
+            try
+            {
+
+                // Extrai os dados da entidade
+                switch (entity)
+                {
+                    case Student student:
+                        email = student.Email;
+                        hashedPassword = student.Password;
+                        roleId = 3;
+                        break;
+                    case Teacher teacher:
+                        email = teacher.Email;
+                        hashedPassword = teacher.Password;
+                        roleId = 2;
+                        break;
+                    case User user:
+                        email = user.Email;
+                        hashedPassword = user.Password;
+                        roleId = user.RoleId;
+                        break;
+                    default:
+                        throw new InvalidOperationException("Entidade não suportada.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Erro ao extrair dados da entidade.", ex);
+            }
+
+
+            // Valida a senha
+            var passwordValid = _passwordHasher.VerifyHashedPassword(email, hashedPassword, password);
+            if (passwordValid != PasswordVerificationResult.Success)
+                throw new UnauthorizedAccessException("Usuário ou senha inválidos.");
+
+            // Gera o token
+            var token = _tokenService.GenerateToken(email, roleId, rememberMe);
+
+            return new { Token = token, User = entity };
         }
 
         public async Task<User> SignInWithTokenAsync(string token)
