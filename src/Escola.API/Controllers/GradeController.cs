@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Enceja.Domain.Entities;
 using Enceja.Domain.Interfaces;
+using System;
+using Enceja.Application.DTO.Entities.Grade;
 
 namespace Enceja.API.Controllers
 {
@@ -34,12 +36,19 @@ namespace Enceja.API.Controllers
             return Ok(nota);
         }
 
-        [HttpGet("GetGradeBySubjectOfStudent/{studentId}")]
-        public async Task<ActionResult<IEnumerable<Grade>>> GetGradeBySubjectOfStudent(int studentId)
+        [HttpGet("get-grade-by-subject-of-student/{studentId}")]
+        public async Task<ActionResult<IEnumerable<GradeDTO>>> GetGradeBySubjectOfStudent(int studentId)
         {
-            var notasPorDisciplinaAluno = await _gradeService.GetGradeBySubjectOfStudent(studentId);
+            try
+            {
+                var notasPorDisciplinaAluno = await _gradeService.GetGradeBySubjectOfStudent(studentId);
 
-            return Ok(notasPorDisciplinaAluno);
+                return Ok(notasPorDisciplinaAluno);
+            }
+            catch (Exception e)
+            {
+                return BadRequest($"Erro ao buscar notas por disciplina do aluno: {e.Message}");
+            }
         }
 
 
