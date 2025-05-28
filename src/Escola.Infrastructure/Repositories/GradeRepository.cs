@@ -16,13 +16,13 @@ namespace Enceja.Infrastructure.Repositories
 
         public async Task<IEnumerable<Grade>> GetGradeBySubjectOfStudent(int studentId)
         {
-            var jooj = await _context.Grades
-                                 .Include(s => s.Subject)
-                                 .Include(s => s.Student)
-                                 .Where(g => g.StudentId == studentId)
-                                 .ToListAsync();
+            var retorno = await _context.Grades
+                                     .Where(g => g.StudentId == studentId)
+                                     .Include(g => g.Student)
+                                     .Include(g => g.Subject)
+                                     .ToListAsync();
 
-            return jooj;
+            return retorno;
         }
     }
 }

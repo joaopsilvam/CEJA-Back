@@ -51,7 +51,6 @@ namespace Enceja.API.Controllers
             }
         }
 
-
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] Grade nota)
         {

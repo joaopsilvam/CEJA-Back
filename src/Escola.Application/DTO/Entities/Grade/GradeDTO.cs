@@ -3,8 +3,8 @@
     public class GradeDTO
     {
         public int Id { get; set; }
-        public int StudentId { get; set; }
-        public int SubjectId { get; set; }
         public int GradeValue { get; set; }
+        public required string StudentName { get; set; }
+        public required string SubjectName { get; set; }
     }
 }
